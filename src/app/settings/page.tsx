@@ -4,6 +4,7 @@ import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
+import Modal from "@/components/Modal";
 
 export default function SettingsPage() {
   const { data: session, status } = useSession();
@@ -15,6 +16,18 @@ export default function SettingsPage() {
   const [theme, setTheme] = useState("dark");
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [modal, setModal] = useState<{
+    show: boolean;
+    type: "info" | "success" | "error" | "confirm";
+    title: string;
+    message: string;
+    onConfirm?: () => void;
+  }>({
+    show: false,
+    type: "info",
+    title: "",
+    message: "",
+  });
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -27,18 +40,30 @@ export default function SettingsPage() {
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
     setSaving(false);
-    alert("Settings saved successfully!");
+    setModal({
+      show: true,
+      type: "success",
+      title: "Settings Saved",
+      message: "Your settings have been saved successfully!",
+    });
   };
 
-  const handleDeleteAccount = async () => {
-    if (!showDeleteConfirm) {
-      setShowDeleteConfirm(true);
-      return;
-    }
-    
-    // Here you would call an API to delete the account
-    alert("Account deletion would be processed here");
-    setShowDeleteConfirm(false);
+  const handleDeleteAccount = () => {
+    setModal({
+      show: true,
+      type: "confirm",
+      title: "Delete Account",
+      message: "Are you absolutely sure? This will permanently delete your account and all associated data. This action cannot be undone.",
+      onConfirm: async () => {
+        // Here you would call an API to delete the account
+        setModal({
+          show: true,
+          type: "info",
+          title: "Account Deletion",
+          message: "Account deletion would be processed here. You would be logged out and redirected.",
+        });
+      },
+    });
   };
 
   const handleExportData = async () => {
@@ -61,9 +86,21 @@ export default function SettingsPage() {
       link.download = `agrilens-data-${new Date().toISOString().split('T')[0]}.json`;
       link.click();
       URL.revokeObjectURL(url);
+      
+      setModal({
+        show: true,
+        type: "success",
+        title: "Data Exported",
+        message: "Your data has been successfully exported!",
+      });
     } catch (error) {
       console.error("Failed to export data:", error);
-      alert("Failed to export data");
+      setModal({
+        show: true,
+        type: "error",
+        title: "Export Failed",
+        message: "Failed to export your data. Please try again.",
+      });
     }
   };
 
@@ -213,32 +250,28 @@ export default function SettingsPage() {
                 <p className="text-sm text-slate-400 mb-4">
                   Permanently delete your account and all associated data. This action cannot be undone.
                 </p>
-                {showDeleteConfirm && (
-                  <p className="text-sm text-red-400 mb-4 font-medium">
-                    ⚠️ Are you sure? Click again to confirm deletion.
-                  </p>
-                )}
-                <div className="flex gap-2">
-                  <button
-                    onClick={handleDeleteAccount}
-                    className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg text-sm font-medium transition-all"
-                  >
-                    {showDeleteConfirm ? "Confirm Delete" : "Delete Account"}
-                  </button>
-                  {showDeleteConfirm && (
-                    <button
-                      onClick={() => setShowDeleteConfirm(false)}
-                      className="px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg text-sm font-medium transition-all"
-                    >
-                      Cancel
-                    </button>
-                  )}
-                </div>
+                <button
+                  onClick={handleDeleteAccount}
+                  className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg text-sm font-medium transition-all"
+                >
+                  Delete Account
+                </button>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Modal */}
+      <Modal
+        isOpen={modal.show}
+        onClose={() => setModal({ ...modal, show: false })}
+        onConfirm={modal.onConfirm}
+        title={modal.title}
+        message={modal.message}
+        type={modal.type}
+        confirmText={modal.type === "confirm" ? "Delete" : "OK"}
+      />
     </>
   );
 }

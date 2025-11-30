@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import MessageBubble from "./MessageBubble";
 import LoadingDots from "./LoadingDots";
+import Modal from "./Modal";
 
 interface Message {
   _id: string;
@@ -21,6 +22,17 @@ export default function ChatWindow({
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const bottomRef = useRef<HTMLDivElement | null>(null);
+  const [modal, setModal] = useState<{
+    show: boolean;
+    type: "error";
+    title: string;
+    message: string;
+  }>({
+    show: false,
+    type: "error",
+    title: "",
+    message: "",
+  });
 
   useEffect(() => {
     if (!chatId) return;
@@ -75,7 +87,12 @@ export default function ChatWindow({
       console.error(err);
       // revert optimistically added user message
       setMessages((prev) => prev.filter((m) => m._id !== tempUserMsg._id));
-      alert("Failed to send message");
+      setModal({
+        show: true,
+        type: "error",
+        title: "Failed to Send",
+        message: "Failed to send your message. Please try again.",
+      });
     } finally {
       setLoading(false);
     }

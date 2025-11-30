@@ -10,7 +10,13 @@ interface Message {
   content: string;
 }
 
-export default function ChatWindow({ chatId }: { chatId: string | null }) {
+export default function ChatWindow({ 
+  chatId,
+  onChatUpdated,
+}: { 
+  chatId: string | null;
+  onChatUpdated?: () => void;
+}) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -60,6 +66,11 @@ export default function ChatWindow({ chatId }: { chatId: string | null }) {
         data.userMsg,
         data.assistantMsg,
       ]);
+      
+      // Update chat list if title changed
+      if (data.chat && onChatUpdated) {
+        onChatUpdated();
+      }
     } catch (err) {
       console.error(err);
       // revert optimistically added user message

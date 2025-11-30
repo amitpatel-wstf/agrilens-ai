@@ -54,8 +54,9 @@ export default function ChatLayout({
         selectedChatId={selectedChatId}
         onSelectChat={onSelectChat}
         onNewChat={createChat}
+        onChatUpdated={fetchChats}
       />
-      <ChatWindow chatId={selectedChatId} />
+      <ChatWindow chatId={selectedChatId} onChatUpdated={fetchChats} />
     </div>
   );
 }

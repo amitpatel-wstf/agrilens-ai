@@ -51,6 +51,14 @@ export async function POST(
       return NextResponse.json({ error: "Chat not found" }, { status: 404 });
     }
 
+    // Check if this is the first message and update chat title
+    const messageCount = await Message.countDocuments({ chatId: chat._id });
+    if (messageCount === 0 && chat.title === "New chat") {
+      // Update title with first 50 chars of user message
+      const newTitle = content.length > 50 ? content.substring(0, 50) + "..." : content;
+      chat.title = newTitle;
+    }
+
     // Save user message
     const userMsg = await Message.create({
       chatId: chat._id,
@@ -92,7 +100,7 @@ export async function POST(
     chat.lastMessageAt = new Date();
     await chat.save();
 
-    return NextResponse.json({ userMsg, assistantMsg }, { status: 201 });
+    return NextResponse.json({ userMsg, assistantMsg, chat }, { status: 201 });
   } catch (error: any) {
     console.error("Error in POST /api/chats/[chatId]/messages:", error);
     return NextResponse.json(

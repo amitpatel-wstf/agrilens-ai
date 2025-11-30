@@ -31,9 +31,9 @@ export default function ChatWindow({ chatId }: { chatId: string | null }) {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
 
-  async function sendMessage(e: React.FormEvent) {
-    e.preventDefault();
-    if (!chatId || !input.trim()) return;
+  async function sendMessage(e?: React.FormEvent) {
+    e?.preventDefault();
+    if (!chatId || !input.trim() || loading) return;
     const userContent = input.trim();
     setInput("");
 
@@ -70,6 +70,20 @@ export default function ChatWindow({ chatId }: { chatId: string | null }) {
     }
   }
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  };
+
+  const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setInput(e.target.value);
+    // Auto-resize textarea
+    e.target.style.height = "auto";
+    e.target.style.height = Math.min(e.target.scrollHeight, 200) + "px";
+  };
+
   if (!chatId) {
     return (
       <section className="flex-1 flex items-center justify-center text-slate-500">
@@ -95,21 +109,23 @@ export default function ChatWindow({ chatId }: { chatId: string | null }) {
       </div>
       <form
         onSubmit={sendMessage}
-        className="border-t border-slate-800 p-3 flex gap-2"
+        className="border-t border-slate-800 p-3 flex gap-2 items-end"
       >
         <textarea
           rows={1}
           value={input}
-          onChange={(e) => setInput(e.target.value)}
-          className="flex-1 resize-none rounded-md bg-slate-900 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
-          placeholder="Ask something about your crops..."
+          onChange={handleInput}
+          onKeyDown={handleKeyDown}
+          className="flex-1 resize-none rounded-md bg-slate-900 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 max-h-[200px] overflow-y-auto"
+          placeholder="Ask something about your crops... (Press Enter to send, Shift+Enter for new line)"
+          style={{ minHeight: "40px" }}
         />
         <button
           type="submit"
           disabled={loading || !input.trim()}
-          className="px-4 py-2 rounded-md bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 text-sm font-medium"
+          className="px-4 py-2 rounded-md bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 text-sm font-medium transition-colors"
         >
-          Send
+          {loading ? "Sending..." : "Send"}
         </button>
       </form>
     </section>

@@ -2,6 +2,7 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 
 export default function HomePage() {
+  console.log("Process =. ",process.env.GOOGLE_API_KEY)
   return (
     <>
       <Navbar />

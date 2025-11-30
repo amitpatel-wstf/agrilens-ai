@@ -98,10 +98,44 @@ export default function ChatWindow({
     }
   }
 
+  const handleInitialMessage = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!input.trim() || loading) return;
+
+    // Create a new chat first
+    try {
+      const res = await fetch("/api/chats", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title: "New chat" }),
+      });
+      const newChat = await res.json();
+      
+      // Update parent to select this chat
+      if (onChatUpdated) {
+        onChatUpdated();
+      }
+      
+      // The chat will be selected and message will be sent automatically
+    } catch (error) {
+      console.error("Failed to create chat:", error);
+      setModal({
+        show: true,
+        type: "error",
+        title: "Failed to Create Chat",
+        message: "Failed to create a new chat. Please try again.",
+      });
+    }
+  };
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      sendMessage();
+      if (chatId) {
+        sendMessage();
+      } else {
+        handleInitialMessage(e);
+      }
     }
   };
 
@@ -114,8 +148,62 @@ export default function ChatWindow({
 
   if (!chatId) {
     return (
-      <section className="flex-1 flex items-center justify-center text-slate-500">
-        <p>Select or create a chat to begin.</p>
+      <section className="flex-1 flex flex-col items-center justify-center bg-slate-950 p-6">
+        <div className="w-full max-w-3xl space-y-8">
+          {/* Welcome Message */}
+          <div className="text-center space-y-4">
+            <h1 className="text-4xl md:text-5xl font-bold text-slate-100">
+              What can I help you with today?
+            </h1>
+            <p className="text-lg text-slate-400">
+              Ask me anything about crop health, diseases, pests, or farming practices
+            </p>
+          </div>
+
+          {/* Centered Input */}
+          <form onSubmit={handleInitialMessage} className="w-full">
+            <div className="relative">
+              <textarea
+                rows={1}
+                value={input}
+                onChange={handleInput}
+                onKeyDown={handleKeyDown}
+                placeholder="Ask about your crops..."
+                className="w-full resize-none rounded-2xl bg-slate-900 border border-slate-700 px-6 py-4 pr-14 text-base focus:outline-none focus:ring-2 focus:ring-emerald-500 max-h-[200px] overflow-y-auto placeholder:text-slate-500"
+                style={{ minHeight: "56px" }}
+              />
+              <button
+                type="submit"
+                disabled={!input.trim()}
+                className="absolute right-3 bottom-3 p-2 rounded-lg bg-emerald-500 hover:bg-emerald-600 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+              >
+                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                </svg>
+              </button>
+            </div>
+          </form>
+
+          {/* Example Prompts */}
+          <div className="grid md:grid-cols-2 gap-3">
+            {[
+              "Why are my tomato leaves turning yellow?",
+              "How to treat powdery mildew on cucumbers?",
+              "Best fertilizer for corn crops?",
+              "Signs of nitrogen deficiency in plants?",
+            ].map((prompt, i) => (
+              <button
+                key={i}
+                onClick={() => setInput(prompt)}
+                className="text-left p-4 rounded-xl bg-slate-900 border border-slate-800 hover:border-emerald-500 transition-all group"
+              >
+                <p className="text-sm text-slate-300 group-hover:text-slate-100">
+                  {prompt}
+                </p>
+              </button>
+            ))}
+          </div>
+        </div>
       </section>
     );
   }

@@ -5,26 +5,26 @@ import { signIn } from "next-auth/react";
 
 export default function SignInPage() {
   return (
-    <div className="min-h-[calc(100vh-56px)] flex items-center justify-center bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
-      <div className="w-full max-w-md bg-slate-900/80 backdrop-blur-xl border border-slate-700 rounded-2xl p-8 space-y-6 shadow-2xl">
+    <div className="min-h-[calc(100vh-56px)] min-h-[calc(100dvh-56px)] flex flex-col items-center justify-center bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 px-4 py-8 sm:px-6 sm:py-12">
+      <div className="w-full max-w-[min(28rem,92vw)] sm:max-w-md md:max-w-lg bg-slate-900/80 backdrop-blur-xl border border-slate-700 rounded-2xl p-6 sm:p-8 md:p-10 space-y-6 shadow-2xl flex-shrink-0">
         <div className="flex justify-center mb-6">
-          <div className="bg-white/5 rounded-xl px-6 py-4 border border-slate-700/50">
+          <div className="bg-white/5 rounded-xl px-4 py-3 sm:px-6 sm:py-4 border border-slate-700/50">
             <Image
               src="/logo_with_name.png"
               alt="AgriLens AI"
               width={200}
               height={60}
-              className="h-14 w-auto brightness-110 contrast-110"
+              className="h-12 w-auto sm:h-14 brightness-110 contrast-110"
             />
           </div>
         </div>
-        <h2 className="text-2xl font-semibold text-center">Welcome Back</h2>
-        <p className="text-slate-400 text-sm text-center">
+        <h2 className="text-xl sm:text-2xl font-semibold text-center text-slate-100">Welcome Back</h2>
+        <p className="text-slate-400 text-sm sm:text-base text-center leading-relaxed">
           Sign in with Google to start chatting with your AI crop health assistant.
         </p>
         <button
           onClick={() => signIn("google", { callbackUrl: "/chat" })}
-          className="w-full py-3 rounded-md bg-emerald-500 hover:bg-emerald-600 text-white font-medium transition-colors flex items-center justify-center gap-2"
+          className="w-full py-3.5 sm:py-4 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white font-medium transition-colors flex items-center justify-center gap-2 text-sm sm:text-base"
         >
           <svg className="w-5 h-5" viewBox="0 0 24 24">
             <path

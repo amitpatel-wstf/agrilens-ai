@@ -30,15 +30,8 @@ export default function ChatLayout({
     }
   }
 
-  async function createChat() {
-    const res = await fetch("/api/chats", {
-      method: "POST",
-      body: JSON.stringify({ title: "New chat" }),
-      headers: { "Content-Type": "application/json" },
-    });
-    const chat = await res.json();
-    await fetchChats();
-    onSelectChat(chat._id);
+  function startNewChat() {
+    onSelectChat(null);
   }
 
   useEffect(() => {
@@ -53,10 +46,17 @@ export default function ChatLayout({
         loading={loading}
         selectedChatId={selectedChatId}
         onSelectChat={onSelectChat}
-        onNewChat={createChat}
+        onNewChat={startNewChat}
         onChatUpdated={fetchChats}
       />
-      <ChatWindow chatId={selectedChatId} onChatUpdated={fetchChats} />
+      <ChatWindow
+        chatId={selectedChatId}
+        onChatUpdated={fetchChats}
+        onChatCreated={(id) => {
+          fetchChats();
+          onSelectChat(id);
+        }}
+      />
     </div>
   );
 }

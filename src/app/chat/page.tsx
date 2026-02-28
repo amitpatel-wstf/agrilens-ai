@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import ChatLayout from "@/components/ChatLayout";
-import Navbar from "@/components/Navbar";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
@@ -28,12 +27,9 @@ export default function ChatPage() {
   if (!session) return null;
 
   return (
-    <>
-      <Navbar />
-      <ChatLayout
-        selectedChatId={selectedChatId}
-        onSelectChat={setSelectedChatId}
-      />
-    </>
+    <ChatLayout
+      selectedChatId={selectedChatId}
+      onSelectChat={setSelectedChatId}
+    />
   );
 }

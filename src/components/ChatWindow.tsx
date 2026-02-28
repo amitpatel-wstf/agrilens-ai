@@ -14,9 +14,11 @@ interface Message {
 export default function ChatWindow({ 
   chatId,
   onChatUpdated,
+  onChatCreated,
 }: { 
   chatId: string | null;
   onChatUpdated?: () => void;
+  onChatCreated?: (chatId: string) => void;
 }) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
@@ -98,33 +100,48 @@ export default function ChatWindow({
     }
   }
 
-  const handleInitialMessage = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!input.trim() || loading) return;
+  const handleInitialMessage = async (e?: React.FormEvent) => {
+    e?.preventDefault();
+    const userContent = input.trim();
+    if (!userContent || loading) return;
 
-    // Create a new chat first
+    setInput("");
+    setLoading(true);
+
     try {
-      const res = await fetch("/api/chats", {
+      const title = userContent.length > 80 ? userContent.slice(0, 80) + "…" : userContent;
+      const createRes = await fetch("/api/chats", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title: "New chat" }),
+        body: JSON.stringify({ title }),
       });
-      const newChat = await res.json();
-      
-      // Update parent to select this chat
-      if (onChatUpdated) {
-        onChatUpdated();
+      if (!createRes.ok) {
+        const err = await createRes.json();
+        throw new Error(err.error || "Failed to create chat");
       }
-      
-      // The chat will be selected and message will be sent automatically
+      const newChat = await createRes.json();
+
+      const msgRes = await fetch(`/api/chats/${newChat._id}/messages`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ content: userContent }),
+      });
+      const msgData = await msgRes.json();
+      if (!msgRes.ok) throw new Error(msgData.error || "Failed to send message");
+
+      onChatCreated?.(newChat._id);
+      onChatUpdated?.();
     } catch (error) {
-      console.error("Failed to create chat:", error);
+      console.error("Failed to create chat or send message:", error);
+      setInput(userContent);
       setModal({
         show: true,
         type: "error",
-        title: "Failed to Create Chat",
-        message: "Failed to create a new chat. Please try again.",
+        title: "Failed to Start Chat",
+        message: "Failed to create the chat or send your message. Please try again.",
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -144,6 +161,17 @@ export default function ChatWindow({
     // Auto-resize textarea
     e.target.style.height = "auto";
     e.target.style.height = Math.min(e.target.scrollHeight, 200) + "px";
+  };
+
+  const suggestedQuestions = [
+    "Why are my tomato leaves turning yellow?",
+    "How to treat powdery mildew on cucumbers?",
+    "Best fertilizer for corn crops?",
+    "Signs of nitrogen deficiency in plants?",
+  ];
+
+  const handleSuggestionClick = (question: string) => {
+    setInput(question);
   };
 
   if (!chatId) {
@@ -169,7 +197,7 @@ export default function ChatWindow({
                 onChange={handleInput}
                 onKeyDown={handleKeyDown}
                 placeholder="Ask about your crops..."
-                className="w-full resize-none rounded-2xl bg-slate-900 border border-slate-700 px-6 py-4 pr-14 text-base focus:outline-none focus:ring-2 focus:ring-emerald-500 max-h-[200px] overflow-y-auto placeholder:text-slate-500"
+                className="w-full resize-none rounded-2xl bg-slate-900 border border-slate-700 px-6 py-4 pr-14 text-base text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 max-h-[200px] overflow-y-auto placeholder:text-slate-500"
                 style={{ minHeight: "56px" }}
               />
               <button
@@ -186,15 +214,11 @@ export default function ChatWindow({
 
           {/* Example Prompts */}
           <div className="grid md:grid-cols-2 gap-3">
-            {[
-              "Why are my tomato leaves turning yellow?",
-              "How to treat powdery mildew on cucumbers?",
-              "Best fertilizer for corn crops?",
-              "Signs of nitrogen deficiency in plants?",
-            ].map((prompt, i) => (
+            {suggestedQuestions.map((prompt, i) => (
               <button
                 key={i}
-                onClick={() => setInput(prompt)}
+                type="button"
+                onClick={() => handleSuggestionClick(prompt)}
                 className="text-left p-4 rounded-xl bg-slate-900 border border-slate-800 hover:border-emerald-500 transition-all group"
               >
                 <p className="text-sm text-slate-300 group-hover:text-slate-100">
@@ -208,18 +232,51 @@ export default function ChatWindow({
     );
   }
 
+  const showSuggestedQuestions = messages.length === 0 && !loading;
+
   return (
     <section className="flex-1 flex flex-col bg-slate-950">
       <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
-        {messages.map((msg) => (
-          <MessageBubble key={msg._id} role={msg.role} content={msg.content} />
-        ))}
-        {loading && (
-          <div className="flex justify-start">
-            <div className="rounded-lg bg-slate-800 px-3 py-2">
-              <LoadingDots />
+        {showSuggestedQuestions ? (
+          <>
+            <div className="max-w-2xl mx-auto pt-8 space-y-6">
+              <div className="text-center space-y-2">
+                <h2 className="text-2xl md:text-3xl font-bold text-slate-100">
+                  What can I help you with today?
+                </h2>
+                <p className="text-slate-400">
+                  Choose a question below or type your own
+                </p>
+              </div>
+              <div className="grid sm:grid-cols-2 gap-3 pt-4">
+                {suggestedQuestions.map((question, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => handleSuggestionClick(question)}
+                    className="text-left p-4 rounded-xl bg-slate-900 border border-slate-800 hover:border-emerald-500 transition-all group"
+                  >
+                    <p className="text-sm text-slate-300 group-hover:text-slate-100">
+                      {question}
+                    </p>
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          </>
+        ) : (
+          <>
+            {messages.map((msg) => (
+              <MessageBubble key={msg._id} role={msg.role} content={msg.content} />
+            ))}
+            {loading && (
+              <div className="flex justify-start">
+                <div className="rounded-lg bg-slate-800 px-3 py-2">
+                  <LoadingDots />
+                </div>
+              </div>
+            )}
+          </>
         )}
         <div ref={bottomRef} />
       </div>
@@ -232,7 +289,7 @@ export default function ChatWindow({
           value={input}
           onChange={handleInput}
           onKeyDown={handleKeyDown}
-          className="flex-1 resize-none rounded-md bg-slate-900 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 max-h-[200px] overflow-y-auto"
+          className="flex-1 resize-none rounded-md bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 max-h-[200px] overflow-y-auto placeholder:text-slate-500"
           placeholder="Ask something about your crops... (Press Enter to send, Shift+Enter for new line)"
           style={{ minHeight: "40px" }}
         />

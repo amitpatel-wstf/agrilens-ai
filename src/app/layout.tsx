@@ -1,6 +1,7 @@
 import "./globals.css";
 import { ReactNode } from "react";
 import Providers from "@/components/Providers";
+import Navbar from "@/components/Navbar";
 
 export const metadata = {
   title: "AgriLens AI - Your AI-Powered Crop Health Assistant",
@@ -19,7 +20,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <link rel="icon" href="/logo.png" type="image/png" />
       </head>
       <body className="bg-slate-950 text-slate-100" suppressHydrationWarning>
-        <Providers>{children}</Providers>
+        <Providers>
+          <Navbar />
+          {children}
+        </Providers>
       </body>
     </html>
   );

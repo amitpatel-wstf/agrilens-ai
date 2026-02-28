@@ -25,7 +25,7 @@ export default function HomePage() {
               {/* Left side - Text content */}
               <div className="space-y-8 text-center md:text-left">
                 {/* Main heading with gradient */}
-                <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight animate-fade-in">
+                <h1 className="text-5xl text-emerald-300 md:text-6xl lg:text-7xl font-bold tracking-tight animate-fade-in">
                   Your AI-Powered{" "}
                   <span className="bg-gradient-to-r from-emerald-400 to-green-500 bg-clip-text text-transparent">
                     Crop Health
@@ -68,7 +68,7 @@ export default function HomePage() {
                       </Link>
                       <Link
                         href="/auth/signin"
-                        className="px-8 py-4 rounded-lg border-2 border-slate-700 hover:border-emerald-500 hover:bg-slate-800 font-semibold text-lg transition-all"
+                        className="px-8 py-4 text-emerald-400 rounded-lg border-2 border-slate-700 hover:border-emerald-500 hover:bg-slate-800 font-semibold text-lg transition-all"
                       >
                         Sign In
                       </Link>
@@ -100,46 +100,47 @@ export default function HomePage() {
 
         {/* Features Section */}
         <section className="px-4 py-16 max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-emerald-300 text-center mb-12">
             How AgriLens AI Helps You
           </h2>
           
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 gap-8">
             {/* Feature 1 */}
             <div className="group p-6 rounded-xl bg-slate-900/50 border border-slate-800 hover:border-emerald-500/50 transition-all hover:transform hover:scale-105">
-              <div className="w-12 h-12 rounded-lg bg-emerald-500/10 flex items-center justify-center mb-4 group-hover:bg-emerald-500/20 transition-colors">
-                <svg className="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="flex items-center gap-2 mb-4 transition-colors">
+                <svg className="h-12 w-12 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
+              <h3 className="text-3xl text-emerald-300 font-semibold ">Disease Detection</h3>
               </div>
-              <h3 className="text-xl font-semibold mb-2">Disease Detection</h3>
-              <p className="text-slate-400">
+              <p className="text-slate-400 text-xl text-justify ">
                 Identify crop diseases, pests, and nutrient deficiencies with AI-powered analysis and get actionable treatment recommendations.
               </p>
             </div>
 
             {/* Feature 2 */}
             <div className="group p-6 rounded-xl bg-slate-900/50 border border-slate-800 hover:border-emerald-500/50 transition-all hover:transform hover:scale-105">
-              <div className="w-12 h-12 rounded-lg bg-emerald-500/10 flex items-center justify-center mb-4 group-hover:bg-emerald-500/20 transition-colors">
-                <svg className="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="flex items-center gap-2 mb-4 transition-colors">
+                <svg className="h-12 w-12 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
                 </svg>
+              <h3 className="text-3xl text-emerald-300 font-semibold ">Expert Guidance</h3>
               </div>
-              <h3 className="text-xl font-semibold mb-2">Expert Guidance</h3>
-              <p className="text-slate-400">
+              <p className="text-slate-400 text-xl text-justify ">
                 Get practical, step-by-step advice on soil health, irrigation, fertilization, and integrated pest management strategies.
               </p>
             </div>
 
             {/* Feature 3 */}
             <div className="group p-6 rounded-xl bg-slate-900/50 border border-slate-800 hover:border-emerald-500/50 transition-all hover:transform hover:scale-105">
-              <div className="w-12 h-12 rounded-lg bg-emerald-500/10 flex items-center justify-center mb-4 group-hover:bg-emerald-500/20 transition-colors">
-                <svg className="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="flex items-center justify-start gap-2 mb-4 transition-colors">
+                <svg className="h-12 w-12 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Instant Answers</h3>
-              <p className="text-slate-400">
+              <h3 className="text-3xl text-emerald-300 font-semibold ">Instant Answers</h3>
+              
+            </div>
+            <p className="text-slate-400 text-xl text-justify ">
                 Ask questions in plain language and receive clear, practical answers tailored to your specific crop and situation.
               </p>
             </div>
@@ -148,7 +149,7 @@ export default function HomePage() {
 
         {/* What You Can Ask Section */}
         <section className="px-4 py-16 max-w-4xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
+          <h2 className="text-3xl text-emerald-300 md:text-4xl font-bold text-center mb-12">
             What You Can Ask
           </h2>
           
@@ -174,7 +175,7 @@ export default function HomePage() {
         {/* CTA Section */}
         <section className="px-4 py-20 text-center">
           <div className="max-w-3xl mx-auto space-y-6">
-            <h2 className="text-3xl md:text-4xl font-bold">
+            <h2 className="text-3xl text-emerald-300 md:text-4xl font-bold">
               Ready to Improve Your Crop Health?
             </h2>
             <p className="text-xl text-slate-300">

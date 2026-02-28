@@ -21,8 +21,8 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav className="relative flex items-center justify-between px-4 md:px-6 py-3 border-b border-slate-800 bg-slate-950/80 backdrop-blur z-50">
-      <Link href="/" className="font-semibold text-lg md:text-xl hover:text-emerald-400 transition-colors">
+    <nav className="relative flex items-center justify-between px-4 md:px-6 py-3 border-b border-slate-800 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 backdrop-blur z-50">
+      <Link href="/" className="font-semibold text-lg md:text-xl text-emerald-400 hover:text-emerald-800 transition-colors">
         AgriLens AI
       </Link>
 

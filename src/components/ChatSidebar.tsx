@@ -15,6 +15,9 @@ export default function ChatSidebar({
   onSelectChat,
   onNewChat,
   onChatUpdated,
+  isMobileOpen = false,
+  onClose,
+  isMobile = false,
 }: {
   chats: Chat[];
   loading: boolean;
@@ -22,6 +25,9 @@ export default function ChatSidebar({
   onSelectChat: (id: string | null) => void;
   onNewChat: () => void;
   onChatUpdated: () => void;
+  isMobileOpen?: boolean;
+  onClose?: () => void;
+  isMobile?: boolean;
 }) {
   const { data: session } = useSession();
   const router = useRouter();
@@ -101,21 +107,42 @@ export default function ChatSidebar({
 
   return (
     <>
-      <aside className="w-64 border-r border-slate-800 bg-slate-950 flex flex-col">
-        <div className="p-3">
+      <aside
+        className={`
+          w-64 sm:w-72 md:w-64 flex-shrink-0 border-r border-slate-800 bg-slate-950 flex flex-col
+          transition-transform duration-200 ease-out z-40
+            ${isMobile
+            ? `fixed inset-y-0 left-0 top-14 bottom-0 pt-2 pb-4 ${isMobileOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 md:relative md:top-0 md:pt-0 md:pb-0`
+            : ""
+          }
+        `}
+      >
+        <div className="p-2 sm:p-3 flex items-center gap-2">
+          {isMobile && onClose && (
+            <button
+              type="button"
+              aria-label="Close menu"
+              onClick={onClose}
+              className="flex-shrink-0 p-2 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-slate-100 transition-colors md:hidden"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          )}
           <button
             onClick={onNewChat}
-            className="w-full px-3 py-2 rounded-md bg-emerald-500 text-white hover:bg-emerald-600 text-sm font-medium"
+            className="flex-1 min-w-0 px-3 py-2.5 sm:py-2 rounded-lg sm:rounded-md bg-emerald-500 text-white hover:bg-emerald-600 text-sm font-medium transition-colors min-h-[44px] sm:min-h-0"
           >
             + New Chat
           </button>
         </div>
-        <div className="flex-1 overflow-y-auto">
-          {loading && <p className="px-3 text-xs text-slate-500">Loading chats...</p>}
+        <div className="flex-1 overflow-y-auto overflow-x-hidden min-h-0">
+          {loading && <p className="px-3 py-2 text-xs text-slate-500">Loading chats...</p>}
           {!loading && chats.length === 0 && (
-            <p className="px-3 text-xs text-slate-500">No chats yet.</p>
+            <p className="px-3 py-2 text-xs text-slate-500">No chats yet.</p>
           )}
-          <ul className="space-y-1 px-2">
+          <ul className="space-y-1 px-2 pb-2">
             {chats.map((chat) => (
               <li key={chat._id}>
                 {editingChatId === chat._id ? (
@@ -129,13 +156,13 @@ export default function ChatSidebar({
                       if (e.key === "Escape") setEditingChatId(null);
                     }}
                     autoFocus
-                    className="w-full px-3 py-2 rounded-md bg-slate-800 text-sm text-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    className="w-full px-3 py-2.5 sm:py-2 rounded-lg sm:rounded-md bg-slate-800 text-sm text-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500 min-h-[44px] sm:min-h-0"
                   />
                 ) : (
                   <button
                     onClick={() => onSelectChat(chat._id)}
                     onContextMenu={(e) => handleContextMenu(e, chat)}
-                    className={`w-full text-left px-3 py-2 rounded-md text-sm truncate ${
+                    className={`w-full text-left px-3 py-2.5 sm:py-2 rounded-lg sm:rounded-md text-sm truncate min-h-[44px] sm:min-h-0 flex items-center ${
                       chat._id === selectedChatId
                         ? "bg-slate-800 text-slate-50"
                         : "hover:bg-slate-900 text-slate-300"
@@ -152,11 +179,11 @@ export default function ChatSidebar({
 
         {/* Profile Section */}
         {session?.user && (
-          <div className="border-t border-slate-800 p-3">
+          <div className="border-t border-slate-800 p-2 sm:p-3 flex-shrink-0">
             <div className="relative" ref={profileMenuRef}>
               <button
                 onClick={() => setShowProfileMenu(!showProfileMenu)}
-                className="w-full flex items-center gap-3 p-2 rounded-lg hover:bg-slate-800 transition-all"
+                className="w-full flex items-center gap-3 p-2.5 sm:p-2 rounded-lg hover:bg-slate-800 transition-all min-h-[44px] sm:min-h-0"
               >
                 <div className="relative">
                   <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-slate-700">
@@ -245,7 +272,7 @@ export default function ChatSidebar({
             onClick={() => setContextMenu(null)}
           />
           <div
-            className="fixed z-50 bg-slate-800 border border-slate-700 rounded-md shadow-lg py-1 min-w-[150px]"
+            className="fixed z-50 bg-slate-800 border border-slate-700 rounded-lg shadow-lg py-1 min-w-[160px] max-w-[calc(100vw-2rem)]"
             style={{ left: contextMenu.x, top: contextMenu.y }}
           >
             <button
@@ -253,13 +280,13 @@ export default function ChatSidebar({
                 const chat = chats.find((c) => c._id === contextMenu.chatId);
                 if (chat) handleEditClick(chat);
               }}
-              className="w-full text-left px-4 py-2 text-sm text-slate-200 hover:bg-slate-700"
+              className="w-full text-left px-4 py-2.5 sm:py-2 text-sm text-slate-200 hover:bg-slate-700 min-h-[44px] sm:min-h-0 flex items-center"
             >
               Edit title
             </button>
             <button
               onClick={() => handleDelete(contextMenu.chatId)}
-              className="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-slate-700"
+              className="w-full text-left px-4 py-2.5 sm:py-2 text-sm text-red-400 hover:bg-slate-700 min-h-[44px] sm:min-h-0 flex items-center"
             >
               Delete chat
             </button>

@@ -8,18 +8,18 @@ export default function HomePage() {
   const { data: session, status } = useSession();
 
   return (
-    <div className="min-h-[calc(100vh-56px)] bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
+    <div className="min-h-[calc(100vh-56px)] min-h-[calc(100dvh-56px)] bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
       {/* Hero Section */}
-      <section className="relative overflow-hidden px-4 py-16 sm:py-20 md:py-28 lg:py-32">
+      <section className="relative overflow-hidden px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20 lg:py-28 xl:py-32">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-40 -right-40 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl animate-pulse delay-1000" />
+          <div className="absolute -top-40 -right-40 w-64 sm:w-80 h-64 sm:h-80 bg-emerald-500/10 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute -bottom-40 -left-40 w-64 sm:w-80 h-64 sm:h-80 bg-emerald-500/10 rounded-full blur-3xl animate-pulse delay-1000" />
         </div>
 
         <div className="relative max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-12 lg:gap-16 items-center">
-            <div className="space-y-8 text-center md:text-left">
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-slate-100 animate-fade-in">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10 md:gap-12 lg:gap-16 items-center">
+            <div className="space-y-6 sm:space-y-8 text-center md:text-left order-2 md:order-1">
+              <h1 className="text-3xl min-[480px]:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-slate-100 animate-fade-in">
                 Your AI-Powered{" "}
                 <span className="bg-gradient-to-r from-emerald-400 to-green-500 bg-clip-text text-transparent">
                   Crop Health
@@ -27,18 +27,18 @@ export default function HomePage() {
                 Assistant
               </h1>
 
-              <p className="text-lg md:text-xl text-slate-300 max-w-xl mx-auto md:mx-0 animate-fade-in-delay leading-relaxed">
+              <p className="text-base sm:text-lg md:text-xl text-slate-300 max-w-xl mx-auto md:mx-0 animate-fade-in-delay leading-relaxed">
                 Get instant expert advice on crop diseases, pests, soil health, and farm management.
                 Powered by advanced AI technology.
               </p>
 
-              <div className="flex flex-wrap gap-4 justify-center md:justify-start animate-fade-in-delay-2">
+              <div className="flex flex-wrap gap-3 sm:gap-4 justify-center md:justify-start animate-fade-in-delay-2">
                 {status === "loading" ? (
-                  <div className="h-14 w-40 rounded-xl bg-slate-800 animate-pulse" />
+                  <div className="h-12 sm:h-14 w-32 sm:w-40 rounded-xl bg-slate-800 animate-pulse" />
                 ) : session ? (
                   <Link
                     href="/chat"
-                    className="group inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-semibold text-base sm:text-lg transition-all hover:shadow-lg hover:shadow-emerald-500/25 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-slate-900"
+                    className="group inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-semibold text-sm sm:text-base md:text-lg transition-all hover:shadow-lg hover:shadow-emerald-500/25 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-slate-900 min-h-[44px]"
                   >
                     Start Chatting
                     <span className="inline-block group-hover:translate-x-0.5 transition-transform" aria-hidden>→</span>
@@ -47,14 +47,14 @@ export default function HomePage() {
                   <>
                     <Link
                       href="/auth/signin"
-                      className="group inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-semibold text-base sm:text-lg transition-all hover:shadow-lg hover:shadow-emerald-500/25 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-slate-900"
+                      className="group inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-semibold text-sm sm:text-base md:text-lg transition-all hover:shadow-lg hover:shadow-emerald-500/25 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-slate-900 min-h-[44px]"
                     >
                       Get Started
                       <span className="inline-block group-hover:translate-x-0.5 transition-transform" aria-hidden>→</span>
                     </Link>
                     <Link
                       href="/auth/signin"
-                      className="inline-flex items-center px-8 py-4 rounded-xl border-2 border-slate-600 text-slate-200 hover:border-emerald-500 hover:bg-slate-800/80 font-semibold text-base sm:text-lg transition-all focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-slate-900"
+                      className="inline-flex items-center justify-center px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl border-2 border-slate-600 text-slate-200 hover:border-emerald-500 hover:bg-slate-800/80 font-semibold text-sm sm:text-base md:text-lg transition-all focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-slate-900 min-h-[44px]"
                     >
                       Sign In
                     </Link>
@@ -63,8 +63,8 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="relative animate-fade-in-delay-2">
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-emerald-500/10 border border-slate-700/80 bg-slate-900/80">
+            <div className="relative animate-fade-in-delay-2 order-1 md:order-2 w-full max-w-lg md:max-w-none mx-auto">
+              <div className="relative rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl shadow-emerald-500/10 border border-slate-700/80 bg-slate-900/80">
                 <Image
                   src="/landing_pic.png"
                   alt="AgriLens AI - Crop Health Analysis"
@@ -72,63 +72,64 @@ export default function HomePage() {
                   height={600}
                   className="w-full h-auto object-cover"
                   priority
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 to-transparent pointer-events-none" />
               </div>
-              <div className="absolute -z-10 -inset-4 bg-gradient-to-r from-emerald-500/15 to-green-500/15 blur-2xl rounded-2xl" />
+              <div className="absolute -z-10 -inset-2 sm:-inset-4 bg-gradient-to-r from-emerald-500/15 to-green-500/15 blur-2xl rounded-xl sm:rounded-2xl" />
             </div>
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="px-4 py-14 sm:py-16 md:py-20 max-w-6xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold text-slate-100 text-center mb-4">
+      <section className="px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20 max-w-6xl mx-auto">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-100 text-center mb-3 sm:mb-4">
           How AgriLens AI Helps You
         </h2>
-        <p className="text-slate-400 text-center max-w-2xl mx-auto mb-12 md:mb-14">
+        <p className="text-slate-400 text-center max-w-2xl mx-auto mb-8 sm:mb-10 md:mb-14 text-sm sm:text-base px-2">
           Built for farmers and growers who need fast, reliable answers.
         </p>
 
-        <div className="grid md:grid-cols-3 gap-6 md:gap-8">
-          <article className="group p-6 sm:p-7 rounded-2xl bg-slate-900/60 border border-slate-700/80 hover:border-emerald-500/40 transition-all duration-200">
-            <div className="flex items-center gap-3 mb-4">
-              <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-400 group-hover:bg-emerald-500/20 transition-colors">
-                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
+          <article className="group p-5 sm:p-6 md:p-7 rounded-xl sm:rounded-2xl bg-slate-900/60 border border-slate-700/80 hover:border-emerald-500/40 transition-all duration-200">
+            <div className="flex items-center gap-3 mb-3 sm:mb-4">
+              <span className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-lg sm:rounded-xl bg-emerald-500/10 text-emerald-400 group-hover:bg-emerald-500/20 transition-colors flex-shrink-0">
+                <svg className="h-5 w-5 sm:h-6 sm:w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </span>
-              <h3 className="text-xl font-semibold text-slate-100">Disease Detection</h3>
+              <h3 className="text-lg sm:text-xl font-semibold text-slate-100">Disease Detection</h3>
             </div>
-            <p className="text-slate-400 text-base leading-relaxed">
+            <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
               Identify crop diseases, pests, and nutrient deficiencies with AI-powered analysis and get actionable treatment recommendations.
             </p>
           </article>
 
-          <article className="group p-6 sm:p-7 rounded-2xl bg-slate-900/60 border border-slate-700/80 hover:border-emerald-500/40 transition-all duration-200">
-            <div className="flex items-center gap-3 mb-4">
-              <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-400 group-hover:bg-emerald-500/20 transition-colors">
-                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <article className="group p-5 sm:p-6 md:p-7 rounded-xl sm:rounded-2xl bg-slate-900/60 border border-slate-700/80 hover:border-emerald-500/40 transition-all duration-200">
+            <div className="flex items-center gap-3 mb-3 sm:mb-4">
+              <span className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-lg sm:rounded-xl bg-emerald-500/10 text-emerald-400 group-hover:bg-emerald-500/20 transition-colors flex-shrink-0">
+                <svg className="h-5 w-5 sm:h-6 sm:w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
                 </svg>
               </span>
-              <h3 className="text-xl font-semibold text-slate-100">Expert Guidance</h3>
+              <h3 className="text-lg sm:text-xl font-semibold text-slate-100">Expert Guidance</h3>
             </div>
-            <p className="text-slate-400 text-base leading-relaxed">
+            <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
               Get practical, step-by-step advice on soil health, irrigation, fertilization, and integrated pest management strategies.
             </p>
           </article>
 
-          <article className="group p-6 sm:p-7 rounded-2xl bg-slate-900/60 border border-slate-700/80 hover:border-emerald-500/40 transition-all duration-200">
-            <div className="flex items-center gap-3 mb-4">
-              <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-400 group-hover:bg-emerald-500/20 transition-colors">
-                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <article className="group p-5 sm:p-6 md:p-7 rounded-xl sm:rounded-2xl bg-slate-900/60 border border-slate-700/80 hover:border-emerald-500/40 transition-all duration-200 sm:col-span-2 lg:col-span-1">
+            <div className="flex items-center gap-3 mb-3 sm:mb-4">
+              <span className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-lg sm:rounded-xl bg-emerald-500/10 text-emerald-400 group-hover:bg-emerald-500/20 transition-colors flex-shrink-0">
+                <svg className="h-5 w-5 sm:h-6 sm:w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </span>
-              <h3 className="text-xl font-semibold text-slate-100">Instant Answers</h3>
+              <h3 className="text-lg sm:text-xl font-semibold text-slate-100">Instant Answers</h3>
             </div>
-            <p className="text-slate-400 text-base leading-relaxed">
+            <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
               Ask questions in plain language and receive clear, practical answers tailored to your specific crop and situation.
             </p>
           </article>
@@ -136,15 +137,15 @@ export default function HomePage() {
       </section>
 
       {/* What You Can Ask Section */}
-      <section className="px-4 py-14 sm:py-16 md:py-20 max-w-4xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold text-slate-100 text-center mb-4">
+      <section className="px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20 max-w-4xl mx-auto">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-100 text-center mb-3 sm:mb-4">
           What You Can Ask
         </h2>
-        <p className="text-slate-400 text-center mb-10 md:mb-12">
+        <p className="text-slate-400 text-center mb-8 sm:mb-10 md:mb-12 text-sm sm:text-base">
           Example questions to get you started
         </p>
 
-        <div className="grid sm:grid-cols-2 gap-3 md:gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
           {[
             "Why are my tomato leaves turning yellow?",
             "How do I treat powdery mildew on cucumbers?",
@@ -155,7 +156,7 @@ export default function HomePage() {
           ].map((question, i) => (
             <div
               key={i}
-              className="p-4 sm:p-5 rounded-xl bg-slate-900/60 border border-slate-700/80 hover:border-slate-600 text-slate-300 text-sm sm:text-base transition-colors"
+              className="p-4 sm:p-5 rounded-xl bg-slate-900/60 border border-slate-700/80 hover:border-slate-600 text-slate-300 text-sm sm:text-base transition-colors min-h-[44px] flex items-center"
             >
               &ldquo;{question}&rdquo;
             </div>
@@ -164,18 +165,18 @@ export default function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="px-4 py-16 sm:py-20 md:py-24 text-center">
-        <div className="max-w-3xl mx-auto space-y-6">
-          <h2 className="text-3xl md:text-4xl font-bold text-slate-100">
+      <section className="px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20 lg:py-24 text-center">
+        <div className="max-w-3xl mx-auto space-y-4 sm:space-y-6">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-100">
             Ready to Improve Your Crop Health?
           </h2>
-          <p className="text-lg md:text-xl text-slate-400">
+          <p className="text-base sm:text-lg md:text-xl text-slate-400 px-2">
             Join farmers worldwide using AI to make better farming decisions.
           </p>
           {status !== "loading" && !session && (
             <Link
               href="/auth/signin"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-semibold text-lg transition-all hover:shadow-lg hover:shadow-emerald-500/25 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-slate-900"
+              className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-semibold text-base sm:text-lg transition-all hover:shadow-lg hover:shadow-emerald-500/25 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-slate-900 min-h-[44px]"
             >
               Start Free Today
               <span aria-hidden>→</span>
